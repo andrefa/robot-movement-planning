@@ -1,13 +1,20 @@
 package br.furb.campopotencial;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PotencialField {
 	
 	private Map map;
 	private float[][] potencialMap;
 	
+	private List<Vector2D> visited;
+	
 	public PotencialField(Map map) {
 		this.map = map;
 		potencialMap = new float[map.getWidth()][map.getHeight()];
+		
+		visited = new ArrayList<Vector2D>();
 		calculatePotencial();
 	}
 
@@ -37,9 +44,27 @@ public class PotencialField {
 	}
 	
 	public float getPotencial(int x, int y){
-		if(x < 0 || x >= map.getWidth() || y < 0 || y >= map.getHeight())
+		if(isOutOfBorder(x,y) || isVisited(x,y))
 			return Float.MAX_VALUE;
+		
 		return potencialMap[x][y];
+	}
+	
+	private boolean isOutOfBorder(int x, int y) {
+		return x < 0 || x >= map.getWidth() || 
+			   y < 0 || y >= map.getHeight();
+	}
+
+	private boolean isVisited(int x, int y) {
+		return visited.contains(new Vector2D(x, y));
+	}
+	
+	public void setVisited(int x, int y){
+		setVisited(new Vector2D(x, y));
+	}
+	
+	public void setVisited(Vector2D vectorVisited){
+		visited.add(vectorVisited);
 	}
 
 }

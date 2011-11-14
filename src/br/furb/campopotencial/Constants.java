@@ -2,6 +2,6 @@ package br.furb.campopotencial;
 
 public final class Constants {
 
-	public static final Integer OFFSET = 10;
+	public static final Integer OFFSET = 30;
 	
 }

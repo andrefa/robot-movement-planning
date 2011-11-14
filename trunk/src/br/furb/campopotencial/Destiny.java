@@ -11,8 +11,7 @@ public class Destiny extends Object{
 
 	@Override
 	public void draw(Graphics2D g) {
-		g.setColor(Color.DARK_GRAY);
-		g.setBackground(Color.DARK_GRAY);
+		g.setColor(Color.BLACK);
 		
 		g.drawRect((int)getPosition().getX()*Constants.OFFSET, (int)getPosition().getY()*Constants.OFFSET,
 				   Constants.OFFSET, Constants.OFFSET);

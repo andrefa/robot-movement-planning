@@ -24,8 +24,7 @@ public class Destiny extends Object{
 
 	@Override
 	public float getDistance(Object another) {
-		// TODO Auto-generated method stub
-		return 0;
+		return getDistance((int)another.getPosition().getX(), (int)another.getPosition().getY());
 	}
 
 	@Override

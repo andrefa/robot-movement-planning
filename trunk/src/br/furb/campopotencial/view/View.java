@@ -108,7 +108,7 @@ public class View extends JFrame {
 
 	public static void main(String[] args) throws Exception {
 		
-		View v = new View(MapFactory.createSimpleMap());
+		View v = new View(MapFactory.createObstacleMap());
 		v.setVisible(true);
 
 		while(!v.done()){

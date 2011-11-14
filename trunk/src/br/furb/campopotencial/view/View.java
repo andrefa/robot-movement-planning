@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import br.furb.campopotencial.Constants;
 import br.furb.campopotencial.Direction;
@@ -49,7 +50,6 @@ public class View extends JFrame {
 		for(Paintable obj : map.getWorldObjects()){
 			obj.draw(g2d);
 		}
-		
 	}
 
 	private void drawOffset(Graphics2D g2d) {
@@ -66,46 +66,54 @@ public class View extends JFrame {
 		}
 	}
 
-	public static void main(String[] args) {
+	public void step() {
+		if(done()){
+			JOptionPane.showMessageDialog(this, "Destiny found.");
+		}
 		
-		Map map = MapFactory.createSimpleMap();
-		PotencialField pf = new PotencialField(map);
-		
-		View v = new View(map);
-		v.setVisible(true);
+		System.out.println();
 		
 		float potencial = Float.MAX_VALUE;
 		Direction dir = Direction.DOWN;
 		Vector2D actualVector = null;
 		Vector2D lastVisitedVector = null;
 		
-		while(potencial > 0){
-			potencial = Float.MAX_VALUE;
-			for(Direction direction : Direction.values()){
-				
-				actualVector = new Vector2D(map.getSource().getPosition().getX()+direction.getX(), 
-											map.getSource().getPosition().getY()+direction.getY());
-				
-				float actualPotencial = pf.getPotencial((int)actualVector.getX(),(int)actualVector.getY());
-				
-				if(potencial > actualPotencial){
-					potencial = actualPotencial;
-					dir = direction;
-					map.getSource().setDirection(new Vector2D(dir.getX(), dir.getY()));
-					lastVisitedVector = actualVector;
-				}
-			}
+		for(Direction direction : Direction.values()){
 			
-			pf.setVisited(lastVisitedVector);
+			actualVector = new Vector2D(map.getSource().getPosition().getX()+direction.getX(), 
+										map.getSource().getPosition().getY()+direction.getY());
 			
-			System.out.println(dir);
-			map.getSource().update();
-			v.repaint();
-			try {
-				Thread.sleep(400);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			float actualPotencial = potencialField.getPotencial((int)actualVector.getX(),(int)actualVector.getY());
+			
+			if(potencial > actualPotencial){
+				potencial = actualPotencial;
+				dir = direction;
+				map.getSource().setDirection(new Vector2D(dir.getX(), dir.getY()));
+				lastVisitedVector = actualVector;
+				System.out.println(potencial);
 			}
+		}
+		potencialField.setVisited(lastVisitedVector);
+		
+		System.out.println(dir);
+		map.getSource().update();
+		
+		repaint();
+	}
+	
+	
+	private boolean done() {
+		return map.getSource().getPosition().equals(map.getDestiny().getPosition());
+	}
+
+	public static void main(String[] args) throws Exception {
+		
+		View v = new View(MapFactory.createSimpleMap());
+		v.setVisible(true);
+
+		while(!v.done()){
+			v.step();
+			Thread.sleep(400);
 		}
 	}
 }

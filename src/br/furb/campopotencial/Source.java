@@ -25,14 +25,13 @@ public class Source extends Object{
 
 	@Override
 	public float getDistance(Object another) {
-		// TODO Auto-generated method stub
-		return 0;
+		return getDistance((int)another.getPosition().getX(), (int)another.getPosition().getY());
 	}
 
 	@Override
 	public float getDistance(int x, int y) {
-		// TODO Auto-generated method stub
-		return 0;
+		return Float.valueOf(Math.sqrt(Math.pow(getPosition().getX()-x, 2d) + 
+				   			 Math.pow(getPosition().getY()-y, 2d))+"");
 	}
 
 }

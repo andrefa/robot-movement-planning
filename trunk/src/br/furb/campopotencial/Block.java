@@ -46,7 +46,7 @@ public class Block extends Object{
 		g.setColor(Color.DARK_GRAY);
 		g.setBackground(Color.DARK_GRAY);
 		
-		g.drawRect((int)getPosition().getX()*Constants.OFFSET, (int)getPosition().getY()*Constants.OFFSET,
+		g.fillRect((int)getPosition().getX()*Constants.OFFSET, (int)getPosition().getY()*Constants.OFFSET,
 				   (int)width*Constants.OFFSET, (int)height*Constants.OFFSET);
 	}
 	

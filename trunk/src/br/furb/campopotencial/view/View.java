@@ -6,19 +6,15 @@ package br.furb.campopotencial.view;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JFrame;
 
-import br.furb.campopotencial.Block;
 import br.furb.campopotencial.Constants;
-import br.furb.campopotencial.Destiny;
 import br.furb.campopotencial.Direction;
 import br.furb.campopotencial.Map;
+import br.furb.campopotencial.MapFactory;
 import br.furb.campopotencial.Object;
 import br.furb.campopotencial.PotencialField;
-import br.furb.campopotencial.Source;
 import br.furb.campopotencial.Vector2D;
 import br.furb.campopotencial.Visited;
 
@@ -30,9 +26,11 @@ public class View extends JFrame {
 
 	private static final long serialVersionUID = -7711887538094277871L;
 	private Map map;
+	private PotencialField potencialField;
 	
 	public View(Map map){
 		this.map = map;
+		potencialField = new PotencialField(map);
 		config();
 	}
 
@@ -71,19 +69,10 @@ public class View extends JFrame {
 
 	public static void main(String[] args) {
 		
-		Source s = new Source(2, 2);
-		Destiny d = new Destiny(15, 16);
-		Map m = new Map(20, 20,s,d);
+		Map map = MapFactory.createSimpleMap();
+		PotencialField pf = new PotencialField(map);
 		
-		m.addObject(new Block(4, 4, 6, 2));
-		m.addObject(new Block(10, 10, 2, 8));
-		m.addObject(new Block(12, 4, 1, 1));
-		
-		List<Vector2D> visited = new ArrayList<Vector2D>();
-		
-		PotencialField pf = new PotencialField(m);
-		
-		View v = new View(m);
+		View v = new View(map);
 		v.setVisible(true);
 		
 		
@@ -91,29 +80,30 @@ public class View extends JFrame {
 		Direction dir = Direction.DOWN;
 		Vector2D actualVector = null;
 		Vector2D lastVisitedVector = null;
+
 		while(potencial > 0){
 			potencial = Float.MAX_VALUE;
 			for(Direction direction : Direction.values()){
 				
-				actualVector = new Vector2D(s.getPosition().getX()+direction.getX(), 
-													 s.getPosition().getY()+direction.getY());
+				actualVector = new Vector2D(map.getSource().getPosition().getX()+direction.getX(), 
+											map.getSource().getPosition().getY()+direction.getY());
 				
 				float actualPotencial = pf.getPotencial((int)actualVector.getX(),(int)actualVector.getY());
 				
-				if(potencial > actualPotencial && !visited.contains(actualVector)){
+				if(potencial > actualPotencial){
 					potencial = actualPotencial;
 					dir = direction;
-					s.setDirection(new Vector2D(dir.getX(), dir.getY()));
+					map.getSource().setDirection(new Vector2D(dir.getX(), dir.getY()));
 					lastVisitedVector = actualVector;
 				}
 			}
 			
-			visited.add(lastVisitedVector);
 			
-			m.addObject(new Visited(lastVisitedVector.getX(), lastVisitedVector.getY()));
+			map.addObject(new Visited(lastVisitedVector.getX(), lastVisitedVector.getY()));
+			pf.setVisited(lastVisitedVector);
 			
 			System.out.println(dir);
-			s.update();
+			map.getSource().update();
 			v.repaint();
 			try {
 				Thread.sleep(400);

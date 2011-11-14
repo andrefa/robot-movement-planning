@@ -30,8 +30,8 @@ public class Block extends Object{
 	}
 
 	private boolean isInside(float x, float y){
-		return (x >= getPosition().getX() && x <= (getPosition().getX() + width)) && 
-			   (y >= getPosition().getY() && y <= (getPosition().getY() + height));
+		return (x >= getPosition().getX() && x < (getPosition().getX() + width)) && 
+			   (y >= getPosition().getY() && y < (getPosition().getY() + height));
 	}
 	
 	private Vector2D getCentralPoint(){

@@ -15,6 +15,7 @@ public class PotencialField {
 		potencialMap = new float[map.getWidth()][map.getHeight()];
 		
 		visited = new ArrayList<Vector2D>();
+		setVisited(map.getSource().getPosition());
 		calculatePotencial();
 	}
 
@@ -65,6 +66,7 @@ public class PotencialField {
 	
 	public void setVisited(Vector2D vectorVisited){
 		visited.add(vectorVisited);
+		map.addObject(new Visited(vectorVisited.getX(), vectorVisited.getY()));
 	}
 
 }

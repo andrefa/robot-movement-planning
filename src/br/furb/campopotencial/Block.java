@@ -8,6 +8,10 @@ public class Block extends Object{
 	private float width;
 	private float height;
 	
+	public Block(float x, float y) {
+		this(x, y, 1, 1);
+	}
+	
 	public Block(float x, float y, float width, float height) {
 		super(x, y);
 		this.width = width;

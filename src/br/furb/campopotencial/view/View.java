@@ -4,25 +4,24 @@
 package br.furb.campopotencial.view;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import br.furb.campopotencial.Constants;
 import br.furb.campopotencial.Direction;
 import br.furb.campopotencial.Map;
-import br.furb.campopotencial.MapFactory;
 import br.furb.campopotencial.Paintable;
 import br.furb.campopotencial.PotencialField;
 import br.furb.campopotencial.Vector2D;
 
 /**
  * @author Andre
- *
  */
-public class View extends JFrame {
+public class View extends JPanel {
 
 	private static final long serialVersionUID = -7711887538094277871L;
 	private Map map;
@@ -35,10 +34,7 @@ public class View extends JFrame {
 	}
 
 	private void config() {
-		setTitle("Campo potencial");
-		setSize(map.getWidth() * Constants.OFFSET,map.getHeight() * Constants.OFFSET);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setUndecorated(true);
+		setPreferredSize(new Dimension(map.getWidth() * Constants.OFFSET + 2,map.getHeight() * Constants.OFFSET + 2));
 	}
 	
 	@Override
@@ -68,12 +64,24 @@ public class View extends JFrame {
 
 	public void step() {
 		if(done()){
-			JOptionPane.showMessageDialog(this, "Destiny found.");
-      return;
+			showMessage("Destiny found");
+			return;
 		}
 		
-		System.out.println();
+		Vector2D lastVisitedVector = getLastVisitedVector();
 		
+		if(lastVisitedVector == null){
+			showMessage("Locked");
+			return;
+		}
+			
+		potencialField.setVisited(lastVisitedVector);
+		map.getSource().update();
+		
+		repaint();
+	}
+	
+	private Vector2D getLastVisitedVector() {
 		float potencial = Float.MAX_VALUE;
 		Direction dir = Direction.DOWN;
 		Vector2D actualVector = null;
@@ -91,29 +99,17 @@ public class View extends JFrame {
 				dir = direction;
 				map.getSource().setDirection(new Vector2D(dir.getX(), dir.getY()));
 				lastVisitedVector = actualVector;
-			 }
+			}
 		}
-		potencialField.setVisited(lastVisitedVector);
-		
-		System.out.println(dir);
-		map.getSource().update();
-		
-		repaint();
+		return lastVisitedVector;
 	}
-	
-	
+
+	private void showMessage(String string) {
+		JOptionPane.showMessageDialog(this, string);
+	}
+
 	private boolean done() {
-		return map.getSource().getPosition().equals(map.getDestiny().getPosition());
+		return map.getSource().colides(map.getDestiny());
 	}
-
-	public static void main(String[] args) throws Exception {
-		
-		View v = new View(MapFactory.createObstacleMap());
-		v.setVisible(true);
-
-		while(!v.done()){
-			v.step();
-			Thread.sleep(400);
-		}
-	}
+	
 }

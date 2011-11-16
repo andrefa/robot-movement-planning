@@ -69,6 +69,7 @@ public class View extends JFrame {
 	public void step() {
 		if(done()){
 			JOptionPane.showMessageDialog(this, "Destiny found.");
+      return;
 		}
 		
 		System.out.println();
@@ -90,8 +91,7 @@ public class View extends JFrame {
 				dir = direction;
 				map.getSource().setDirection(new Vector2D(dir.getX(), dir.getY()));
 				lastVisitedVector = actualVector;
-				System.out.println(potencial);
-			}
+			 }
 		}
 		potencialField.setVisited(lastVisitedVector);
 		

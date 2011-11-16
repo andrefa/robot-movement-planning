@@ -28,5 +28,10 @@ public class Visited extends Object {
 		return Float.valueOf(Math.sqrt(Math.pow(getPosition().getX()-x, 2d) + 
 				   			 Math.pow(getPosition().getY()-y, 2d))+"");
 	}
+	
+	@Override
+	public boolean isSolid() {
+		return true;
+	}
 
 }

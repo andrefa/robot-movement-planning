@@ -49,36 +49,38 @@ public class View extends JPanel {
 	}
 
 	private void drawOffset(Graphics2D g2d) {
-		int x = Constants.OFFSET;
+		int x = 0;
 		g2d.setColor(Color.WHITE);
 		while( x < getWidth()){
 			g2d.drawLine(x, 0, x, getHeight());
 			x += Constants.OFFSET;
 		}
-		int y = Constants.OFFSET;
+		int y = 0;
 		while( y < getHeight()){
 			g2d.drawLine(0, y, getWidth(), y);
 			y += Constants.OFFSET;
 		}
 	}
 
-	public void step() {
+	public boolean step() {
 		if(done()){
 			showMessage("Destiny found");
-			return;
+			return true;
 		}
 		
 		Vector2D lastVisitedVector = getLastVisitedVector();
 		
 		if(lastVisitedVector == null){
 			showMessage("Locked");
-			return;
+			return true;
 		}
 			
 		potencialField.setVisited(lastVisitedVector);
 		map.getSource().update();
 		
 		repaint();
+		
+		return false;
 	}
 	
 	private Vector2D getLastVisitedVector() {

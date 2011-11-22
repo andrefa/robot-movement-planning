@@ -1,5 +1,6 @@
 package br.furb.campopotencial.view;
 
+import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +17,7 @@ public class FrameView extends JFrame{
 	private static final long serialVersionUID = -496170061145666037L;
 	private View panelView;
 	private JButton buttonStep;
+	private JButton buttonRun;
 	
 	public FrameView(){
 		this(MapFactory.createSimpleMap());
@@ -26,13 +28,30 @@ public class FrameView extends JFrame{
 		createComponents(map);
 	}
 
-	private void config(Map map) {
+	private void autoExecute() {
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				while(!panelView.step()) {
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}).start();
+	}
+
+	private void config(Map map) {		
 		setTitle("Campo potencial");
 		setSize((map.getWidth() * Constants.OFFSET) + 30, (map.getHeight() * Constants.OFFSET) + 80);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(new FlowLayout());
-		setResizable(false);
-		setLocation(1500, 200);
+		//setResizable(false);
+		setLocation(100, 200);
+		repaint();
 	}
 
 	private void createComponents(Map map) {
@@ -47,10 +66,25 @@ public class FrameView extends JFrame{
 			}
 		});
 		add(buttonStep);
+		
+		buttonRun = new JButton("Executar");
+		buttonRun.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				autoExecute();
+			}
+		});
+		add(buttonRun);
 	}
 	
 	public static void main(String[] args) {
-		new FrameView(MapFactory.createSimpleMap()).setVisible(true);
+		EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				//new FrameView(MapFactory.createObstacleMap()).setVisible(true);
+				new FrameView(MapFactory.createRandomMap(50, 50)).setVisible(true);
+			}
+		});
 	}
 
 }

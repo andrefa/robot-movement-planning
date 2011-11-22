@@ -11,9 +11,10 @@ public class Destiny extends Object{
 
 	@Override
 	public void draw(Graphics2D g) {
-		g.setColor(Color.BLACK);
+		g.setColor(Color.GREEN);
+		g.setBackground(Color.GREEN);
 		
-		g.drawRect((int)getPosition().getX()*Constants.OFFSET, (int)getPosition().getY()*Constants.OFFSET,
+		g.fillRect((int)getPosition().getX()*Constants.OFFSET, (int)getPosition().getY()*Constants.OFFSET,
 				   Constants.OFFSET, Constants.OFFSET);
 		
 		float halfOffset = Constants.OFFSET / 2;

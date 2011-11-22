@@ -11,10 +11,10 @@ public class Source extends Object{
 
 	@Override
 	public void draw(Graphics2D g) {
-		g.setColor(Color.DARK_GRAY);
-		g.setBackground(Color.DARK_GRAY);
+		g.setColor(Color.BLUE);
+		g.setBackground(Color.BLUE);
 		
-		g.drawRect((int)getPosition().getX()*Constants.OFFSET, (int)getPosition().getY()*Constants.OFFSET,
+		g.fillRect((int)getPosition().getX()*Constants.OFFSET, (int)getPosition().getY()*Constants.OFFSET,
 				   Constants.OFFSET, Constants.OFFSET);
 		
 		float halfOffset = Constants.OFFSET / 2;

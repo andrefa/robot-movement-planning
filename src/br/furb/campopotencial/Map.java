@@ -43,7 +43,18 @@ public final class Map {
 	}
 	
 	public void addObject(Object obj) {
-		this.worldObjects.add(obj);
+		if(isAvailable(obj))
+			this.worldObjects.add(obj);
+	}
+
+	private boolean isAvailable(Object obj) {
+		for(Object other : worldObjects) {
+			if(obj.colides(other)) {
+				return false;
+			}
+		}
+		
+		return true;
 	}
 	
 }

@@ -14,7 +14,7 @@ public class Visited extends Object {
 		g.setColor(Color.BLUE);
 		g.setBackground(Color.BLUE);
 		
-		g.drawRect((int)getPosition().getX()*Constants.OFFSET, (int)getPosition().getY()*Constants.OFFSET,
+		g.drawOval((int)getPosition().getX()*Constants.OFFSET, (int)getPosition().getY()*Constants.OFFSET,
 				   Constants.OFFSET, Constants.OFFSET);
 	}
 

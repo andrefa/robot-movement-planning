@@ -1,0 +1,1 @@
+Trabalho desenvolvido para a disciplina de Algoritmos geometricos.
